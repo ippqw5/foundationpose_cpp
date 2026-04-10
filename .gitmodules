@@ -1,3 +1,4 @@
 [submodule "easy_deploy_tool"]
 	path = easy_deploy_tool
-	url = git@github.com:zz990099/EasyDeployTool.git
+	url = https://github.com/ippqw5/EasyDeployTool.git
+	branch = trt1013

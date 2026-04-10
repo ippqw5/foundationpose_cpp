@@ -3,3 +3,16 @@ build
 models
 .vscode
 mustard0
+.cache
+test_data/*.png
+test_data/*.mp4
+
+__pycache__/
+*.pyc
+*.pyo
+*.so
+*.egg-info/
+
+.github/superpower
+
+compile_commands.json

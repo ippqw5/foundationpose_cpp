@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel", "pybind11>=2.10"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "foundationpose-cpp"
+version = "0.1.0"
+description = "Python bindings for the FoundationPose C++/CUDA 6D pose estimation library"
+requires-python = ">=3.8"
+dependencies = ["numpy"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["foundationpose_cpp*"]
+
+[tool.setuptools.package-data]
+foundationpose_cpp = ["*.so", "*.pyd"]

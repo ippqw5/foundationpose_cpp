@@ -10,9 +10,10 @@
 using namespace inference_core;
 using namespace detection_6d;
 
-static const std::string refiner_engine_path_ = "/workspace/models/refiner_hwc_dynamic_fp16.engine";
-static const std::string scorer_engine_path_  = "/workspace/models/scorer_hwc_dynamic_fp16.engine";
-static const std::string demo_data_path_      = "/workspace/test_data/mustard0";
+static const std::string base_path_           = "/home/isaacsim/code/foundationpose_cpp";
+static const std::string refiner_engine_path_ = base_path_ + "/models/refiner_hwc_dynamic_fp16.engine";
+static const std::string scorer_engine_path_  = base_path_ + "/models/scorer_hwc_dynamic_fp16.engine";
+static const std::string demo_data_path_      = base_path_ + "/test_data/mustard0";
 static const std::string demo_textured_obj_path = demo_data_path_ + "/mesh/textured_simple.obj";
 static const std::string demo_textured_map_path = demo_data_path_ + "/mesh/texture_map.png";
 static const std::string demo_name_             = "mustard";
@@ -31,7 +32,7 @@ std::tuple<std::shared_ptr<Base6DofDetectionModel>, std::shared_ptr<BaseMeshLoad
                                          {
                                             {"transf_input", {252, 160, 160, 6}},
                                             {"render_input", {252, 160, 160, 6}},
-                                        },
+                                         },
                                          {{"scores", {252, 1}}}, 1);
 
   Eigen::Matrix3f intrinsic_in_mat = ReadCamK(demo_data_path_ + "/cam_K.txt");
@@ -67,7 +68,7 @@ TEST(foundationpose_test, test)
   cv::cvtColor(regist_plot, regist_plot, cv::COLOR_RGB2BGR);
   auto draw_pose = ConvertPoseMesh2BBox(out_pose, mesh_loader);
   draw3DBoundingBox(intrinsic_in_mat, draw_pose, 480, 640, object_dimension, regist_plot);
-  cv::imwrite("/workspace/test_data/test_foundationpose_plot.png", regist_plot);
+  cv::imwrite(base_path_ + "/test_data/test_foundationpose_plot.png", regist_plot);
 
   auto rgb_paths = get_files_in_directory(demo_data_path_ + "/rgb/");
   std::sort(rgb_paths.begin(), rgb_paths.end());
@@ -93,14 +94,14 @@ TEST(foundationpose_test, test)
     cv::cvtColor(track_plot, track_plot, cv::COLOR_RGB2BGR);
     auto draw_pose = ConvertPoseMesh2BBox(track_pose, mesh_loader);
     draw3DBoundingBox(intrinsic_in_mat, draw_pose, 480, 640, object_dimension, track_plot);
-    cv::imshow("test_foundationpose_result", track_plot);
-    cv::waitKey(20);
+    // cv::imshow("test_foundationpose_result", track_plot);
+    // cv::waitKey(20);
     result_image_sequence.push_back(track_plot);
 
     out_pose = track_pose;
   }
 
-  saveVideo(result_image_sequence, "/workspace/test_data/test_foundationpose_result.mp4");
+  saveVideo(result_image_sequence, base_path_ + "/test_data/test_foundationpose_result.mp4");
 }
 
 TEST(foundationpose_test, speed_register)

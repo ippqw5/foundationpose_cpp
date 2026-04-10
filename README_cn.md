@@ -51,7 +51,7 @@
 
 1. 下载`foundationpose_cpp`repo
 ```bash
-git clone git@github.com:zz990099/foundationpose_cpp.git
+git clone https://github.com/ippqw5/foundationpose_cpp
 cd foundationpose_cpp
 git submodule init
 git submodule update

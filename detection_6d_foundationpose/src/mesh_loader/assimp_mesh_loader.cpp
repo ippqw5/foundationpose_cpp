@@ -3,6 +3,8 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
+#include <assimp/version.h>
+#include <dlfcn.h>
 #include <filesystem>
 
 #include <opencv2/imgcodecs.hpp>
@@ -12,6 +14,20 @@
 #include <glog/log_severity.h>
 
 namespace detection_6d {
+
+static std::string GetSharedLibPathFromSymbol(const void *symbol)
+{
+  if (symbol == nullptr)
+  {
+    return "<null symbol>";
+  }
+  Dl_info info;
+  if (dladdr(symbol, &info) == 0 || info.dli_fname == nullptr)
+  {
+    return "<dladdr unavailable>";
+  }
+  return std::string(info.dli_fname);
+}
 
 static std::pair<Eigen::Vector3f, Eigen::Vector3f> FindMinMaxVertex(const aiMesh *mesh)
 {
@@ -164,6 +180,11 @@ private:
 AssimpMeshLoader::AssimpMeshLoader(const std::string &name, const std::string &mesh_file_path)
     : name_(name)
 {
+  LOG(INFO) << "[AssimpMeshLoader][DBG] Assimp runtime version="
+            << aiGetVersionMajor() << "." << aiGetVersionMinor() << "." << aiGetVersionRevision();
+  LOG(INFO) << "[AssimpMeshLoader][DBG] Assimp symbol library="
+            << GetSharedLibPathFromSymbol(reinterpret_cast<const void *>(&aiGetVersionMajor));
+
   if (mesh_file_path.empty())
   {
     throw std::invalid_argument("[AssimpMeshLoader] Got empty mesh_file_path !");

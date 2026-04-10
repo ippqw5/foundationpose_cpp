@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(foundationpose_cpp)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CXX_STANDARD_REQUIRED 17)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(easy_deploy_tool)
